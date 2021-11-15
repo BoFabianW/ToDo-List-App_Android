@@ -19,6 +19,7 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
     List<Item> itemList;
     ItemListAdapter itemListAdapter;
 
+    // Konstruktor.
     public MainActivityListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
 
@@ -30,17 +31,15 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()) {
-
-            case R.id.btnFab:
-                showCreateDialog();
-                break;
+        if (view.getId() == R.id.btnFab) {
+            showCreateDialog();
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+        // Item holen durch Index(position).
         Item item = itemList.get(position);
 
         item.setDone(!item.isDone());

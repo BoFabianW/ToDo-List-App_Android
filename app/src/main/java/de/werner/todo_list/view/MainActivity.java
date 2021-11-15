@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         mainActivityListener.onCreateContextMenu(menu, v, menuInfo);
     }
 
-
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         return mainActivityListener.onContextItemSelected(item);

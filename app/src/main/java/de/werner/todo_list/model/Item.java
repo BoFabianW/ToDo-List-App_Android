@@ -1,16 +1,16 @@
 package de.werner.todo_list.model;
 
-import de.werner.todo_list.view.MainActivity;
-
 public class Item {
 
     private String titel;
     private boolean isDone;
 
+    // Konstruktor.
     public Item() {
         this.isDone = false;
     }
 
+    // #################### GETTER UND SETTER #####################
     public String getTitel() {
         return titel;
     }

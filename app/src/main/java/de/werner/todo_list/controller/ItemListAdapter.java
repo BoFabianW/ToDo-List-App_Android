@@ -2,7 +2,6 @@ package de.werner.todo_list.controller;
 
 import static de.werner.todo_list.R.drawable.checked;
 import static de.werner.todo_list.R.drawable.unchecked;
-
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -48,12 +47,13 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
         Item item = itemList.get(position);
         tvItemTitel.setText(item.getTitel());
 
-        ImageView ivTaskListRowImage = view.findViewById(R.id.ivItemIcon);
+        ImageView ivItemImage = view.findViewById(R.id.ivItemIcon);
 
+        // Eigenschaft in Objekt 'item' prüfen und entsprechendes Image setzen.
         if (item.isDone()) {
-            ivTaskListRowImage.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), checked));
+            ivItemImage.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), checked));
         } else {
-            ivTaskListRowImage.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), unchecked));
+            ivItemImage.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), unchecked));
         }
 
         return view;
