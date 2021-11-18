@@ -1,8 +1,6 @@
 package de.werner.todo_list.controller;
 
-import android.app.AlertDialog;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,8 +14,9 @@ import de.werner.todo_list.view.MainActivity;
 public class MainActivityListener implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     MainActivity mainActivity;
-    List<Item> itemList;
-    ItemListAdapter itemListAdapter;
+
+    public List<Item> itemList;
+    public ItemListAdapter itemListAdapter;
 
     // Konstruktor.
     public MainActivityListener(MainActivity mainActivity) {
@@ -25,14 +24,18 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
 
         itemList = new ArrayList<>();
         itemListAdapter = new ItemListAdapter(mainActivity, itemList);
-        mainActivity.lvItems.setAdapter(itemListAdapter);
+        this.mainActivity.lvItems.setAdapter(itemListAdapter);
     }
 
     @Override
     public void onClick(View view) {
 
         if (view.getId() == R.id.btnFab) {
-            showCreateDialog();
+            mainActivity.showCreateDialog();
+        }
+
+        if (view.getId() == R.id.ivNewItemSpeak) {
+            mainActivity.startTextToSpeak();
         }
     }
 
@@ -67,25 +70,5 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
         }
 
         return true;
-    }
-
-    private void showCreateDialog() {
-        View editDialog = LayoutInflater.from(mainActivity).inflate(R.layout.new_item, null);
-
-        final EditText etNewItem = editDialog.findViewById(R.id.etNewItem);
-
-        AlertDialog.Builder alert = new AlertDialog.Builder(mainActivity);
-        alert.setView(editDialog)
-                .setPositiveButton("Bestätigen", (dialog, which) -> {
-
-                    Item item = new Item();
-                    item.setTitel(etNewItem.getText().toString());
-
-                    itemList.add(item);
-
-                    itemListAdapter.notifyDataSetChanged();
-                })
-                .setNegativeButton("Abbrechen", null)
-                .show();
     }
 }

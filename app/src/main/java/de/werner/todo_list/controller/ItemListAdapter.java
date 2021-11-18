@@ -18,8 +18,8 @@ import de.werner.todo_list.model.Item;
 
 public class ItemListAdapter extends ArrayAdapter<Item> {
 
-    private Context context;
-    private List<Item> itemList;
+    private final Context context;
+    private final List<Item> itemList;
     private final LayoutInflater layoutInflater;
 
     // Konstruktor.
@@ -43,11 +43,10 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
         }
 
         TextView tvItemTitel = view.findViewById(R.id.tvItemTitel);
+        ImageView ivItemImage = view.findViewById(R.id.ivItemIcon);
 
         Item item = itemList.get(position);
         tvItemTitel.setText(item.getTitel());
-
-        ImageView ivItemImage = view.findViewById(R.id.ivItemIcon);
 
         // Eigenschaft in Objekt 'item' prüfen und entsprechendes Image setzen.
         if (item.isDone()) {

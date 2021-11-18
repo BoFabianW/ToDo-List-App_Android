@@ -28,8 +28,20 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivNewItemSpeak"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvNewItemTitle" />
+
+    <ImageView
+        android:id="@+id/ivNewItemSpeak"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:contentDescription="TextToSpeak"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etNewItem"
+        app:layout_constraintTop_toBottomOf="@+id/tvNewItemTitle"
+        app:srcCompat="@android:drawable/presence_audio_away" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
