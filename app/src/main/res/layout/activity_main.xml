@@ -33,5 +33,7 @@
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="@+id/lvItems"
         app:layout_constraintEnd_toEndOf="@+id/lvItems"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:focusable="true"
+        android:contentDescription="TODO" />
 </androidx.constraintlayout.widget.ConstraintLayout>

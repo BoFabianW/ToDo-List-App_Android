@@ -3,5 +3,6 @@
 
     <item
         android:id="@+id/itemDelete"
+        android:icon="@android:drawable/ic_menu_delete"
         android:title="Aufgabe löschen" />
 </menu>

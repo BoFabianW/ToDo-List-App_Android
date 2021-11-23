@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/layout/activity_main.xml" value="0.28532608695652173" />
         <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/layout/custom_item.xml" value="0.28532608695652173" />
         <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/layout/new_item.xml" value="0.31521739130434784" />
+        <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/layout/save_itemlist.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/menu/delete.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/menu/deleteItem.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Fabian/AndroidStudioProjects/ToDoList/app/src/main/res/menu/options.xml" value="0.36666666666666664" />
       </map>

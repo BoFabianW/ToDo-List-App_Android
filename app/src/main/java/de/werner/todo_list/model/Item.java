@@ -2,15 +2,26 @@ package de.werner.todo_list.model;
 
 public class Item {
 
+    private long id;
     private String titel;
     private boolean isDone;
 
     // Konstruktor.
-    public Item() {
+    public Item(String titel) {
+        this.titel = titel;
         this.isDone = false;
     }
 
     // #################### GETTER UND SETTER #####################
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getTitel() {
         return titel;
     }

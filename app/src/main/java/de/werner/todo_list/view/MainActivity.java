@@ -5,13 +5,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -22,17 +21,19 @@ import java.util.ArrayList;
 import java.util.Locale;
 import de.werner.todo_list.R;
 import de.werner.todo_list.controller.MainActivityListener;
+import de.werner.todo_list.datenbank.Datenbank;
 import de.werner.todo_list.model.Item;
 
 public class MainActivity extends AppCompatActivity {
 
     MainActivityListener mainActivityListener;
 
-    public EditText etNewItem;
+    public EditText etNewItem, etSaveItemList;
     public ListView lvItems;
     public FloatingActionButton btnFab;
     public ActivityResultLauncher<Intent> activityResultLauncher;
     public AlertDialog startDialog;
+    public Datenbank db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,18 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> resultString;
                     resultString = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     etNewItem.setText(resultString.get(0).toUpperCase());
-                    setItem();
+                    setItem(etNewItem.getText().toString());
                     startDialog.dismiss();
             }
         });
+
+        load();
+    }
+
+    @Override
+    protected void onStop() {
+        setItemDB();
+        super.onStop();
     }
 
     @Override
@@ -73,14 +82,7 @@ public class MainActivity extends AppCompatActivity {
         return mainActivityListener.onContextItemSelected(item);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public void showCreateDialog() {
+    public void showDialogTextToSpeak() {
 
         View editDialog = LayoutInflater.from(this).inflate(R.layout.new_item, null);
 
@@ -91,19 +93,47 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(editDialog)
-                .setPositiveButton("Bestätigen", (dialog, which) -> setItem())
+                .setPositiveButton("Bestätigen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setItem(etNewItem.getText().toString());
+                    }
+                })
                 .setNegativeButton("Abbrechen", null);
 
         startDialog = alert.create();
         startDialog.show();
     }
 
-    public void setItem() {
+    public void setItem(String itemText) {
 
-        Item item = new Item();
-        item.setTitel(etNewItem.getText().toString());
-
+        Item item = new Item(itemText);
         mainActivityListener.itemList.add(item);
+        mainActivityListener.itemListAdapter.notifyDataSetChanged();
+    }
+
+    public void setItemDB() {
+
+        db.deleteTable();
+        db = new Datenbank(MainActivity.this);
+
+        for (Item item : mainActivityListener.itemList) {
+            db.createItem(item);
+        }
+    }
+
+    public void load() {
+        db = new Datenbank(MainActivity.this);
+        mainActivityListener.itemList.clear();
+        mainActivityListener.itemList.addAll(db.loadTable());
+        mainActivityListener.itemListAdapter.notifyDataSetChanged();
+    }
+
+    public void itemDelete(int position) {
+
+        if (Datenbank.tableName != null) db.deleteItem(mainActivityListener.itemList.get(position));
+
+        mainActivityListener.itemList.remove(position);
         mainActivityListener.itemListAdapter.notifyDataSetChanged();
     }
 

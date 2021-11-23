@@ -4,7 +4,6 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.List;
 import de.werner.todo_list.R;
@@ -31,7 +30,7 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
     public void onClick(View view) {
 
         if (view.getId() == R.id.btnFab) {
-            mainActivity.showCreateDialog();
+            mainActivity.showDialogTextToSpeak();
         }
 
         if (view.getId() == R.id.ivNewItemSpeak) {
@@ -55,7 +54,6 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
         mainActivity.getMenuInflater().inflate(R.menu.delete, menu);
     }
 
-
     // Contextmenü-Aktionen
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -65,8 +63,7 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
 
         // Eintrag entfernen
         if (item.getItemId() == R.id.itemDelete) {
-            itemList.remove(listPosition);
-            itemListAdapter.notifyDataSetChanged();
+            mainActivity.itemDelete(listPosition);
         }
 
         return true;
