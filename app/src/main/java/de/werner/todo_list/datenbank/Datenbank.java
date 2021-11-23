@@ -17,7 +17,7 @@ public class Datenbank extends SQLiteOpenHelper {
     public static String tableName = "liste";
 
     // Konstanten für DB-Tabelle
-    public static final int VERSION = 9;
+    public static final int VERSION = 1;
     public static final String DB_NAME = "todos";
     public static final String ID_COLUMN = "ID";
     public static final String ITEM_COLUMN = "inhalt_item";

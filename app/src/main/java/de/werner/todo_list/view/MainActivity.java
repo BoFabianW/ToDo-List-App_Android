@@ -131,8 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void itemDelete(int position) {
 
-        if (Datenbank.tableName != null) db.deleteItem(mainActivityListener.itemList.get(position));
-
+        db.deleteItem(mainActivityListener.itemList.get(position));
         mainActivityListener.itemList.remove(position);
         mainActivityListener.itemListAdapter.notifyDataSetChanged();
     }
