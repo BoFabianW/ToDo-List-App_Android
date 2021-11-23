@@ -42,7 +42,9 @@ public class Datenbank extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    // Neues Item in die DB schreiben.
+    /*
+     Neues Item in die DB schreiben.
+     */
     public Item createItem(Item item) {
         SQLiteDatabase database = this.getWritableDatabase();
 
@@ -90,12 +92,18 @@ public class Datenbank extends SQLiteOpenHelper {
         return item;
     }
 
+    /*
+     Eintrag aus DB löschen.
+     */
     public void deleteItem(Item item) {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(tableName, ID_COLUMN + " =?", new String[] {String.valueOf(item.getId())});
         database.close();
     }
 
+    /*
+     Tabelle löschen.
+     */
     public void deleteTable() {
         SQLiteDatabase database = this.getWritableDatabase();
         String dropTable = "DROP TABLE IF EXISTS " + tableName;
@@ -103,7 +111,9 @@ public class Datenbank extends SQLiteOpenHelper {
         onCreate(database);
     }
 
-    // Laden der Items aus der Datenbank.
+    /*
+     Laden der Items aus der Datenbank.
+     */
     @SuppressLint("Range")
     public List<Item> loadTable() {
         SQLiteDatabase database = this.getReadableDatabase();

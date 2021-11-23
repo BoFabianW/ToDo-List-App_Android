@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
         startDialog.show();
     }
 
+    /*
+     Item zu ItemList hinzufügen.
+     */
     public void setItem(String itemText) {
 
         Item item = new Item(itemText);
@@ -113,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
         setItemDB();
     }
 
+    /*
+     Tabelle in DB löschen und aktualisieren.
+     */
     public void setItemDB() {
 
         db.deleteTable();
