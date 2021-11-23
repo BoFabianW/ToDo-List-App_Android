@@ -5,10 +5,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,20 +28,20 @@ public class MainActivity extends AppCompatActivity {
 
     MainActivityListener mainActivityListener;
 
-    public EditText etNewItem, etSaveItemList;
+    public EditText etNewItem;
     public ListView lvItems;
     public FloatingActionButton btnFab;
     public ActivityResultLauncher<Intent> activityResultLauncher;
     public AlertDialog startDialog;
-    public Datenbank db;
+    public Datenbank db = new Datenbank(MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvItems         = findViewById(R.id.lvItems);
-        btnFab          = findViewById(R.id.btnFab);
+        lvItems = findViewById(R.id.lvItems);
+        btnFab = findViewById(R.id.btnFab);
 
         // Neuen Controller erstellen.
         mainActivityListener = new MainActivityListener(this);
@@ -54,16 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
         activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
 
-                if (result.getData() != null) {
-                    ArrayList<String> resultString;
-                    resultString = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    etNewItem.setText(resultString.get(0).toUpperCase());
-                    setItem(etNewItem.getText().toString());
-                    startDialog.dismiss();
+            if (result.getData() != null) {
+                ArrayList<String> resultString;
+                resultString = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                etNewItem.setText(resultString.get(0).toUpperCase());
+                setItem(etNewItem.getText().toString());
+                startDialog.dismiss();
             }
         });
 
-        load();
+        try {
+            load();
+        } catch (Exception e) {
+            Log.d("Datenbank: ", "Tabelle nicht vorhanden.");
+        }
     }
 
     @Override
@@ -93,12 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(editDialog)
-                .setPositiveButton("Bestätigen", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        setItem(etNewItem.getText().toString());
-                    }
-                })
+                .setPositiveButton("Bestätigen", (dialogInterface, i) -> setItem(etNewItem.getText().toString().toUpperCase()))
                 .setNegativeButton("Abbrechen", null);
 
         startDialog = alert.create();
@@ -110,12 +109,13 @@ public class MainActivity extends AppCompatActivity {
         Item item = new Item(itemText);
         mainActivityListener.itemList.add(item);
         mainActivityListener.itemListAdapter.notifyDataSetChanged();
+
+        setItemDB();
     }
 
     public void setItemDB() {
 
         db.deleteTable();
-        db = new Datenbank(MainActivity.this);
 
         for (Item item : mainActivityListener.itemList) {
             db.createItem(item);
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void load() {
-        db = new Datenbank(MainActivity.this);
+
         mainActivityListener.itemList.clear();
         mainActivityListener.itemList.addAll(db.loadTable());
         mainActivityListener.itemListAdapter.notifyDataSetChanged();

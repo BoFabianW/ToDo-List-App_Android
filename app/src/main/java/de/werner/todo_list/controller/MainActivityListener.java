@@ -29,6 +29,7 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
     @Override
     public void onClick(View view) {
 
+
         if (view.getId() == R.id.btnFab) {
             mainActivity.showDialogTextToSpeak();
         }
