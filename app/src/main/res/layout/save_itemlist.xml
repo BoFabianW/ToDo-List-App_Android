@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Neue Aufgabe"
+        android:text="Neue Liste anlegen"
         android:textColor="#21115A"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,27 +21,17 @@
     <EditText
         android:id="@+id/etInput"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
+        android:focusable="true"
         android:inputType="textPersonName"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/ivNewItemSpeak"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialogTitle" />
-
-    <ImageView
-        android:id="@+id/ivNewItemSpeak"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
-        android:contentDescription="TextToSpeak"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etInput"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDialogTitle"
-        app:srcCompat="@android:drawable/presence_audio_online" />
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,11 @@
 package de.werner.todo_list.controller;
 
+import android.annotation.SuppressLint;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 import de.werner.todo_list.R;
@@ -49,6 +51,8 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
 
         // Liste aktualisieren
         itemListAdapter.notifyDataSetChanged();
+
+        mainActivity.setItemDB();
     }
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -56,7 +60,7 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
     }
 
     // Contextmenü-Aktionen
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         // Position in der Liste
@@ -67,6 +71,21 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
             mainActivity.itemDelete(listPosition);
         }
 
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.optionItem01:
+                mainActivity.startTodoListActivity();
+                break;
+
+            case R.id.optionItem02:
+                mainActivity.showDialogSaveItemList();
+                break;
+        }
         return true;
     }
 }

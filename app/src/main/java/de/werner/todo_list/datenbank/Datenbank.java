@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,31 +14,36 @@ import de.werner.todo_list.model.Item;
 
 public class Datenbank extends SQLiteOpenHelper {
 
-    // Tabellenname
-    public static String tableName = "liste";
-
     // Konstanten für DB-Tabelle
-    public static final int VERSION = 1;
-    public static final String DB_NAME = "todos";
+    public static final int VERSION = 2;
+    public static final String DB_NAME = "todo_list_db";
+    public static final String DEFAULT_TABLE = "list";
     public static final String ID_COLUMN = "ID";
     public static final String ITEM_COLUMN = "inhalt_item";
     public static final String DONE_COLUMN = "erledigt";
+    public static final String DEFAULT_CREATE_QUERY = "CREATE TABLE " + DEFAULT_TABLE + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + ITEM_COLUMN + " TEXT NOT NULL, " + DONE_COLUMN + " TEXT NOT NULL)";
 
-    public Datenbank(@Nullable Context context) {
+    // Tabellenname
+    public static String newTableName;
+    public static String NEW_TABLE_CREATE_QUERY;
+
+    public Datenbank(@Nullable Context context, String newTable) {
         super(context, DB_NAME, null, VERSION);
+
+        newTableName = newTable;
+        NEW_TABLE_CREATE_QUERY = "CREATE TABLE " + newTableName + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + ITEM_COLUMN + " TEXT NOT NULL, " + DONE_COLUMN + " TEXT NOT NULL)";
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
-        // DB-Tabelle erstellen
-        String createQuery = "CREATE TABLE " + tableName + " (" + ID_COLUMN + " INTEGER PRIMARY KEY, " + ITEM_COLUMN + " TEXT NOT NULL, " + DONE_COLUMN + " BOOLEAN)";
-        sqLiteDatabase.execSQL(createQuery);
+        try {
+            sqLiteDatabase.execSQL(DEFAULT_CREATE_QUERY);
+        } catch (Exception ignored) {}
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        String dropTable = "DROP TABLE IF EXISTS " + tableName;
+        String dropTable = "DROP TABLE IF EXISTS " + DEFAULT_TABLE;
         sqLiteDatabase.execSQL(dropTable);
         onCreate(sqLiteDatabase);
     }
@@ -53,7 +59,7 @@ public class Datenbank extends SQLiteOpenHelper {
         values.put(DONE_COLUMN, item.isDone());
 
         // Zugewiesenen 'long' aus der Tabelle speichern, durch Schreiben des neuen Items in der DB.
-        long newID = database.insert(tableName, null, values);
+        long newID = database.insert(newTableName, null, values);
 
         // DB schließen.
         database.close();
@@ -65,8 +71,9 @@ public class Datenbank extends SQLiteOpenHelper {
     public Item readItem(long id) {
         SQLiteDatabase database = this.getReadableDatabase();
 
-        Cursor cursor = database.query(
-                tableName, new String[]{ID_COLUMN, ITEM_COLUMN, DONE_COLUMN}, ID_COLUMN + " = ? ", new String[]{String.valueOf(id)}, null, null, null);
+        Cursor cursor = database.query(newTableName, new String[]{ID_COLUMN,
+                                        ITEM_COLUMN, DONE_COLUMN}, ID_COLUMN + " = ? ",
+                                            new String[]{String.valueOf(id)}, null, null, null);
 
         // Variable von Item erstellen mit dem Wert 'null'.
         Item item = null;
@@ -97,18 +104,27 @@ public class Datenbank extends SQLiteOpenHelper {
      */
     public void deleteItem(Item item) {
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(tableName, ID_COLUMN + " =?", new String[] {String.valueOf(item.getId())});
+        database.delete(newTableName, ID_COLUMN + " =?", new String[] {String.valueOf(item.getId())});
         database.close();
     }
 
     /*
-     Tabelle löschen.
+     Tabelle löschen und neu erstellen.
      */
     public void deleteTable() {
+
         SQLiteDatabase database = this.getWritableDatabase();
-        String dropTable = "DROP TABLE IF EXISTS " + tableName;
+
+        String dropTable = "DROP TABLE IF EXISTS " + newTableName;
         database.execSQL(dropTable);
-        onCreate(database);
+        createTable();
+    }
+
+    public void deleteTableComplete() {
+
+        SQLiteDatabase database = this.getWritableDatabase();
+        String dropTable = "DROP TABLE IF EXISTS " + newTableName;
+        database.execSQL(dropTable);
     }
 
     /*
@@ -120,7 +136,7 @@ public class Datenbank extends SQLiteOpenHelper {
 
         List<Item> items = new ArrayList<>();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM " + tableName, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + newTableName, null);
 
         if(cursor.moveToFirst()) {
             do {
@@ -134,5 +150,14 @@ public class Datenbank extends SQLiteOpenHelper {
         database.close();
 
         return items;
+    }
+
+    public void createTable() {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.execSQL(NEW_TABLE_CREATE_QUERY);
+    }
+
+    public void startDatabaseCreate() {
+        Log.d("Datenbank:","DB steht zur Verfügung.");
     }
 }

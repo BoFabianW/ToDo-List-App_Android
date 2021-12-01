@@ -29,11 +29,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:backgroundTint="#FF9800"
+        android:backgroundTint="#220851"
         android:clickable="true"
+        android:contentDescription="TODO"
+        android:focusable="true"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/lvItems"
         app:layout_constraintEnd_toEndOf="@+id/lvItems"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:focusable="true"
-        android:contentDescription="TODO" />
+        app:srcCompat="@android:drawable/ic_input_add" />
 </androidx.constraintlayout.widget.ConstraintLayout>

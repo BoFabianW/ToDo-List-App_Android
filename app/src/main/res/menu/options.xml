@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/optionItem01"
+        android:icon="@drawable/icon_list"
+        android:title="Meine Listen" />
+    <item
+        android:id="@+id/optionItem02"
+        android:icon="@drawable/icon_new_list"
+        android:title="Neue Liste anlegen" />
+</menu>

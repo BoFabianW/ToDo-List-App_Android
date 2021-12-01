@@ -42,7 +42,7 @@ public class ItemListAdapter extends ArrayAdapter<Item> {
             view = convertView;
         }
 
-        TextView tvItemTitel = view.findViewById(R.id.tvItemTitel);
+        TextView tvItemTitel = view.findViewById(R.id.tvTodoListTitel);
         ImageView ivItemImage = view.findViewById(R.id.ivItemIcon);
 
         Item item = itemList.get(position);
