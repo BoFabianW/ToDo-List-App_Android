@@ -2,6 +2,7 @@ package de.werner.todo_list.controller;
 
 import android.annotation.SuppressLint;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,7 +13,7 @@ import de.werner.todo_list.R;
 import de.werner.todo_list.model.Item;
 import de.werner.todo_list.view.MainActivity;
 
-public class MainActivityListener implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivityListener implements View.OnClickListener, AdapterView.OnItemClickListener, View.OnKeyListener {
 
     MainActivity mainActivity;
 
@@ -87,5 +88,11 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean onKey(View view, int i, KeyEvent keyEvent) {
+        mainActivity.checkTableName(mainActivity.etNewItemList.getText().toString());
+        return false;
     }
 }

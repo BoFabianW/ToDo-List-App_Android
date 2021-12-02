@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     MainActivityListener mainActivityListener;
 
     public EditText etNewItem, etNewItemList;
+    public TextView tvError, tvListName;
     public ListView lvItems;
     public static FloatingActionButton btnFab;
     public ActivityResultLauncher<Intent> activityResultLauncher;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvListName = findViewById(R.id.tvListName);
         lvItems = findViewById(R.id.lvItems);
         btnFab = findViewById(R.id.btnFab);
 
@@ -83,10 +86,12 @@ public class MainActivity extends AppCompatActivity {
         loadPreferences();
         if (aktuelleTabelle != null) {
             loadTable(aktuelleTabelle);
+            tvListName.setText(aktuelleTabelle.toUpperCase());
         } else {
             mainActivityListener.itemList.clear();
             mainActivityListener.itemListAdapter.notifyDataSetChanged();
             btnFab.setVisibility(View.INVISIBLE);
+            tvListName.setText("");
         }
         super.onRestart();
     }
@@ -143,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         View editDialog = LayoutInflater.from(this).inflate(R.layout.save_itemlist, null);
 
         etNewItemList = editDialog.findViewById(R.id.etInput);
+        etNewItemList.setOnKeyListener(mainActivityListener);
+
+        tvError = editDialog.findViewById(R.id.tvError);
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(editDialog)
@@ -191,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
             mainActivityListener.itemList.clear();
             mainActivityListener.itemList.addAll(db.loadTable());
             mainActivityListener.itemListAdapter.notifyDataSetChanged();
+            tvListName.setText(aktuelleTabelle.toUpperCase());
         }
     }
 
@@ -207,9 +216,10 @@ public class MainActivity extends AppCompatActivity {
             mainActivityListener.itemListAdapter.notifyDataSetChanged();
             sbTodoLists.append(aktuelleTabelle).append(",");
             savePreferences();
+            tvListName.setText(aktuelleTabelle.toUpperCase());
             Toast.makeText(this, "Neue Liste angelegt!", Toast.LENGTH_SHORT).show();
         } catch (SQLiteException e) {
-            Toast.makeText(this, "Liste existiert bereits!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Fehler beim Anlegen der Liste!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -254,5 +264,41 @@ public class MainActivity extends AppCompatActivity {
     public void checkDB() {
         db = new Datenbank(MainActivity.this, "");
         db.startDatabaseCreate();
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void checkTableName(String eingabeText) {
+
+        String regex = "[!§?&={}()]";
+        String regexNumber = "[0-9]";
+
+        char[] zeichen;
+
+        // String in ein Char-Array speichern.
+        zeichen = eingabeText.toCharArray();
+
+        tvError.setText("");
+
+        if (eingabeText.length() > 0) {
+
+            String tmp = String.valueOf(zeichen[0]);
+
+            if (tmp.matches(regexNumber)) {
+                tvError.setText("Am Anfang des Tabellennamens darf keine Zahl stehen.");
+            } else {
+                for (char c : zeichen) {
+
+                    // Char aus dem Char-Array in String speichern.
+                    String s = String.valueOf(c);
+
+                    boolean regexClear;
+                    regexClear = s.matches(regex);
+
+                    if (regexClear)  tvError.setText("Tabellenname enthält ungültige Zeichen.");
+                }
+            }
+        } else {
+            tvError.setText("Tabellenname muss min. 1 Zeichen lang sein.");
+        }
     }
 }
