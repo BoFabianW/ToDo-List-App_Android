@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "de.werner.todo_list"
-        minSdk 18
+        minSdk 21
         targetSdk 31
         versionCode 4
         versionName "4.0"

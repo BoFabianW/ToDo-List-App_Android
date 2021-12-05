@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Neue Tabelle erstellen.
     public void newTable(String table) {
 
         aktuelleTabelle = table.toLowerCase();

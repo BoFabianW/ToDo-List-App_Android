@@ -2,7 +2,6 @@ package de.werner.todo_list.controller;
 
 import android.annotation.SuppressLint;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
