@@ -13,7 +13,7 @@ import de.werner.todo_list.R;
 import de.werner.todo_list.model.Item;
 import de.werner.todo_list.view.MainActivity;
 
-public class MainActivityListener implements View.OnClickListener, AdapterView.OnItemClickListener, View.OnKeyListener {
+public class MainActivityListener implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     MainActivity mainActivity;
 
@@ -88,11 +88,5 @@ public class MainActivityListener implements View.OnClickListener, AdapterView.O
                 break;
         }
         return true;
-    }
-
-    @Override
-    public boolean onKey(View view, int i, KeyEvent keyEvent) {
-        mainActivity.checkTableName(mainActivity.etNewItemList.getText().toString());
-        return false;
     }
 }

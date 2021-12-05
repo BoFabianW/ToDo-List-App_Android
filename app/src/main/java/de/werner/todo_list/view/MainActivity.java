@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -148,7 +150,22 @@ public class MainActivity extends AppCompatActivity {
         View editDialog = LayoutInflater.from(this).inflate(R.layout.save_itemlist, null);
 
         etNewItemList = editDialog.findViewById(R.id.etInput);
-        etNewItemList.setOnKeyListener(mainActivityListener);
+        etNewItemList.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                checkTableName(etNewItemList.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         tvError = editDialog.findViewById(R.id.tvError);
 
